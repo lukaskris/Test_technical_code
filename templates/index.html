@@ -1,0 +1,38 @@
+<html>
+
+<head>
+    <title>Generator</title>
+</head>
+
+<body>
+    <h1>Number Generator</h1>
+    <input type="" number" id="inputNumber" placeholder="Input Angka" />
+    <button onclick="generate('triangle')">Generate Segitiga</button>
+    <button onclick="generate('odd')">Generate Bilangan Genap</button>
+    <button onclick="generate('prime')">Generate Bilangan Pirma</button>
+    <h2>Result:</h2>
+    <div id="result"></div>
+    <script>
+        function generate(type) {
+            const input = document.getElementById('inputNumber').value;
+            const url = '/' + type + '?input=' + input;
+            const options = {
+                method: 'GET',
+            };
+            fetch(url, options).then(response => {
+                // When the page is loaded convert it to text
+                return response.text()
+            }).then(response => {
+                const parser = new DOMParser()
+                const doc = parser.parseFromString(response, "text/html")
+                document.getElementById('result').innerHTML = response;
+                console.log(doc);
+                console.log(response);
+            }).catch(error => {
+                document.getElementById('result').innerHTML = error;
+            });
+        }
+    </script>
+</body>
+
+</html>
