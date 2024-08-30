@@ -7,6 +7,7 @@ def hello_world():
     return render_template('index.html')
 
 def validate_input(input_value):
+    """Validates if the input is a non-negative integer."""
     try:
         number = int(input_value)
         return number >= 0
@@ -17,27 +18,22 @@ def validate_input(input_value):
 def generate_triangle():
     input_value = request.args.get('input')
     if not validate_input(input_value):
-        return "Invalid Page", 400
+        return "Invalid Input", 400
     
-    result = ''
-    for i in range(len(input_value)):
-        result += input_value[i] + ('0' * (i+1))  + '<br/>'
+    result = ''.join(f"{char}{'0' * (i + 1)}<br/>" for i, char in enumerate(input_value))
     return result
 
 @app.route("/odd")
 def generate_odd():
     input_value = request.args.get('input')
     if not validate_input(input_value):
-        return "Invalid Page", 400
+        return "Invalid Input", 400
     
-    result = ''
-    for i in range(int(input_value) + 1):
-        if not i & 1:
-            result += str(i) + ' '
-
-    return '<div>' + result + '</div>';
+    result = ' '.join(str(i) for i in range(int(input_value) + 1) if i % 2 == 1)
+    return f'<div>{result}</div>'
 
 def is_prime(number):
+    """Checks if a number is a prime."""
     if number <= 1:
         return False
     if number == 2:
@@ -53,11 +49,10 @@ def is_prime(number):
 def generate_prime():
     input_value = request.args.get('input')
     if not validate_input(input_value):
-        return "Invalid Page", 400
+        return "Invalid Input", 400
     
-    result = ''
-    for i in range(2, int(input_value) + 1):
-        if is_prime(i):
-            result += str(i) + ' '
-    return '<div>' + result + '</div>';
+    result = ' '.join(str(i) for i in range(2, int(input_value) + 1) if is_prime(i))
+    return f'<div>{result}</div>'
 
+if __name__ == "__main__":
+    app.run(debug=True)

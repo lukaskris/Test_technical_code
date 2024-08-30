@@ -1,34 +1,36 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <title>Generator</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Generator</title>
 </head>
 
 <body>
     <h1>Number Generator</h1>
-    <input type="" number" id="inputNumber" placeholder="Input Angka" />
+    <input type="number" id="inputNumber" placeholder="Input Angka" />
+    <br />
     <button onclick="generate('triangle')">Generate Segitiga</button>
-    <button onclick="generate('odd')">Generate Bilangan Genap</button>
-    <button onclick="generate('prime')">Generate Bilangan Pirma</button>
+    <button onclick="generate('odd')">Generate Bilangan Ganjil</button>
+    <button onclick="generate('prime')">Generate Bilangan Prima</button>
     <h2>Result:</h2>
     <div id="result"></div>
+
     <script>
         function generate(type) {
             const input = document.getElementById('inputNumber').value;
-            const url = '/' + type + '?input=' + input;
-            const options = {
-                method: 'GET',
-            };
-            fetch(url, options).then(response => {
-                // When the page is loaded convert it to text
-                return response.text()
-            }).then(response => {
-                const parser = new DOMParser()
-                const doc = parser.parseFromString(response, "text/html")
-                document.getElementById('result').innerHTML = response;
-            }).catch(error => {
-                document.getElementById('result').innerHTML = error;
-            });
+            const url = `/${type}?input=${input}`;
+
+            fetch(url)
+                .then(response => response.text())
+                .then(response => {
+                    document.getElementById('result').innerHTML = response;
+                })
+                .catch(error => {
+                    document.getElementById('result').textContent = 'Error: ' + error;
+                });
         }
     </script>
 </body>
